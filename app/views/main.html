@@ -1,0 +1,53 @@
+<div class="navbar navbar-inverse navbar-static-top" role="navigation" ng-controller="NavigationController">
+    <div class="navbar-header">
+        <div class="navbar-brand">Command Recommender</div>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li ng-class="{'active': current == 'current'}">
+                <a ng-href="#/{{userId}}/current">Current Recommendations</a>
+            </li>
+            <li ng-class="{'active': current == 'past'}">
+                <a ng-href="#/{{userId}}/past">Past Recommendations</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class = "container" ng-controller="RecommendationController">
+    <div class = "panel panel-default" ng-repeat="recommendation in recommendations">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-9"><h2>{{recommendation.command_detail.command_name}}</h2></div>
+                <div class="col-md-2"><h3><span class="label label-default">{{recommendation.command_detail.shortcut}}</span></h3></div>
+            </div>
+        </div>
+        <div class="panel-body">
+           <p class="text-muted">How To Use This Command:</p>
+           <p>{{recommendation.command_detail.description}}</p>
+            <hr>
+           <p class="text-muted">Why We Recommended This Command:</p>
+           <p>
+               {{recommendation.reason}}
+           </p>
+            <hr>
+            <div class="row">
+                <div class="col-md-5">
+                    <p class="text-muted">I Found this Useful:</p>
+                    <p>
+                        <a ng-click="markAsUseful(true)" class = "btn" ng-class="{'btn-selected': isUsefulSelected(recommendation.useful)}" ng-model="recommendaiton">
+                            <span class="glyphicon glyphicon-ok" style="color: darkgreen;"></span>
+                        </a>
+                        <a ng-click="markAsUseful(false)" class="btn" ng-class="{'btn-selected': isNotUsefulSelected(recommendation.useful)}" ng-model="recommendaiton">
+                            <span class="glyphicon glyphicon-remove" style="color: red;"></span>
+                        </a>
+                    </p>
+                </div>
+                <div class="col-md-5">
+                    <p class="text-muted">Created On:</p>
+                    <p>{{recommendation.created_on | date}} - {{recommendation.new_recommendation}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
