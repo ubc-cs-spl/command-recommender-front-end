@@ -1,22 +1,35 @@
 'use strict';
 
-describe('Controller: NavigationCtrl', function () {
-
+describe('Controller: NavigationController', function () {
+    var createController, $rootScope;
   // load the controller's module
   beforeEach(module('frontEndApp'));
 
-  var NavigationCtrl,
+  var NavigationController,
     scope;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
-    scope = $rootScope.$new();
-    NavigationCtrl = $controller('NavigationCtrl', {
-      $scope: scope
-    });
+  beforeEach(inject(function ($injector) {
+      $rootScope = $injector.get('$rootScope');
+
+      var $controller = $injector.get('$controller');
+
+      createController = function(){
+          return NavigationController = $controller('NavigationController', {
+              $scope: $rootScope,
+              $routeParams: {userId: "abcdef", current: "current"}
+          });
+      };
+
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(scope.awesomeThings.length).toBe(3);
+  it('should have the correct userId', function () {
+    var controller = createController();
+    expect($rootScope.userId).toBe("abcdef");
+  });
+
+  it('should have the correct current', function(){
+      var controller = createController();
+      expect($rootScope.current).toBe("current");
   });
 });

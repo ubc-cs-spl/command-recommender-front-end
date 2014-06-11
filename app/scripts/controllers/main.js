@@ -16,8 +16,8 @@ angular.module('frontEndApp')
         }
         getRecommendations();
 
-        $scope.markAsUseful = function(useful){
-            var recommendation = this.recommendation;
+        $scope.markAsUseful = function(useful, index){
+            var recommendation = $scope.recommendations[index];
             $http.get('/api/mark_recommendation/' + recommendation.id, {
                 params: {useful: useful}
             }).success(function(){
@@ -26,7 +26,7 @@ angular.module('frontEndApp')
         };
 
         $scope.isUsefulSelected = function(recommendation){
-            if(recommendation === null){
+            if(recommendation == null){
                 return false;
             }else{
                 return recommendation;
@@ -34,7 +34,7 @@ angular.module('frontEndApp')
         };
 
         $scope.isNotUsefulSelected = function(recommendation){
-            if(recommendation === null){
+            if(recommendation == null){
                 return false;
             }else{
                 return !recommendation;
