@@ -45,9 +45,17 @@
                 </div>
                 <div class="col-md-5">
                     <p class="text-muted">Created On:</p>
-                    <p>{{recommendation.created_on | date}} - {{recommendation.new_recommendation}}</p>
+                    <p>{{recommendation.created_on | date}}</p>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="panel panel-danger" ng-show="recommendations.length == 0">
+        <div class = "panel-heading">
+            <h2>Need Recommendations</h2>
+        </div>
+        <div class="panel-body">
+            You currently do not have any recommendations
         </div>
     </div>
 </div>

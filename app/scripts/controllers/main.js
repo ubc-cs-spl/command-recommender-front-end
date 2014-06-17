@@ -5,14 +5,13 @@ angular.module('frontEndApp')
         $scope.recommendations = {};
         $scope.filterParams = {};
         function getRecommendations(){
-                $http.get('/api/get_recommendations/' + $routeParams.userId + '/' + $routeParams.current).success(function(data){
-                    if(data.length === 0){
+                $http.get('/api/get_recommendations/' + $routeParams.userId + '/' + $routeParams.current)
+                    .success(function(data){
+                        $scope.recommendations = data;
+                    })
+                    .error(function(){
                         $location.url('/');
-                    }
-
-                    $scope.recommendations = data;
-
-                });
+                    });
         }
         getRecommendations();
 
