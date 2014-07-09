@@ -7,6 +7,9 @@
             <li ng-class="{'active': current == 'current'}">
                 <a ng-href="#/{{userId}}/current">Current Recommendations</a>
             </li>
+            <li ng-class="{'active': current == 'saved'}">
+                <a ng-href="#/{{userId}}/saved">Saved Recommendations</a>
+            </li>
             <li ng-class="{'active': current == 'past'}">
                 <a ng-href="#/{{userId}}/past">Past Recommendations</a>
             </li>
@@ -51,6 +54,8 @@
                                     <a ng-click="markAsUseful(false, $index)" class="btn" ng-class="{'btn-selected': isNotUsefulSelected(recommendation.useful)}" ng-model="recommendaiton">
                                         <span class="glyphicon glyphicon-remove" style="color: red;"></span>
                                     </a>
+                                    <a ng-click="saveRecommendation(true, $index)" class="btn btn-success" ng-hide="recommendation.saved">Save</a>
+                                    <a ng-click="saveRecommendation(false, $index)" class="btn btn-danger" ng-hide="!recommendation.saved">Unsave</a>
                                 </p>
                             </div>
                             <div class="col-md-5">

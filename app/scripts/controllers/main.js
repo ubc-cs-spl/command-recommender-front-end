@@ -24,6 +24,15 @@ angular.module('frontEndApp')
             });
         };
 
+        $scope.saveRecommendation = function(saved, index){
+            var recommendation = $scope.recommendations[index];
+            $http.get('/api/save_recommendation/' + recommendation.id, {
+                params: {saved :saved}
+            }).success(function(){
+               recommendation.saved = saved;
+            });
+        }
+
         $scope.isUsefulSelected = function(recommendation){
             if(recommendation == null){
                 return false;
