@@ -44,7 +44,7 @@ module.exports = function (grunt) {
       },
       compass: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['compass:server', 'autoprefixer']
+        tasks: ['compass:server', 'autoprefixer', 'compass:devDist']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -205,7 +205,12 @@ module.exports = function (grunt) {
         options: {
           debugInfo: true
         }
-      }
+      },
+        devDist: {
+            options: {
+                cssDir: '<%= yeoman.dist %>/styles'
+            }
+        }
     },
 
     // Renames files for browser caching purposes
@@ -345,6 +350,17 @@ module.exports = function (grunt) {
             src: '*.*'
         }]
       },
+      devDist: {
+          files: [{
+              expand: true,
+              dot: true,
+              cwd: '<%= yeoman.app %>',
+              dest: '<%= yeoman.dist %>',
+              src: [
+                  '**','!styles/**'   // everything but styles/
+              ]
+          }]
+      },
       styles: {
         expand: true,
         cwd: '<%= yeoman.app %>/styles',
@@ -449,6 +465,15 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin'
   ]);
+
+    grunt.registerTask('devBuild',[
+        'clean:dist',
+        'bowerInstall',
+        'concurrent:dist',
+        'autoprefixer',
+        'compass:devDist',
+        'copy:devDist'
+    ]);
 
   grunt.registerTask('default', [
     'newer:jshint',
