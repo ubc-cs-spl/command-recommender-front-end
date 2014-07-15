@@ -5,13 +5,16 @@
     <div>
         <ul class="nav navbar-nav">
             <li ng-class="{'active': current == 'current'}">
-                <a ng-href="#/{{userId}}/current">Current Recommendations</a>
+                <a ng-href="#/recommendations/{{userId}}/current">Current Recommendations</a>
             </li>
             <li ng-class="{'active': current == 'saved'}">
-                <a ng-href="#/{{userId}}/saved">Saved Recommendations</a>
+                <a ng-href="#/recommendations/{{userId}}/saved">Saved Recommendations</a>
             </li>
             <li ng-class="{'active': current == 'past'}">
-                <a ng-href="#/{{userId}}/past">Past Recommendations</a>
+                <a ng-href="#/recommendations/{{userId}}/past">Past Recommendations</a>
+            </li>
+            <li ng-class="{'active': current == 'command_detail'}">
+                <a ng-href="#/command_detail/{{userId}}">Help Community</a>
             </li>
         </ul>
     </div>
@@ -19,7 +22,7 @@
 
 <div class = "container-fluid" ng-controller="RecommendationController">
     <div class="row">
-        <div class="col-md-3" ng-repeat="recommendation in recommendations">
+        <div class="col-md-6" ng-repeat="recommendation in recommendations">
             <div class = "panel panel-default" >
                     <div class="panel-heading">
                         <h2>{{recommendation.command_detail.command_name}}</h2>
@@ -37,10 +40,9 @@
                        <p>
                            {{recommendation.reason}}
                            <div class="progress">
-                                <div class="progress-bar" style="width:{{recommendation.reason_value}}%">
-                                    <div class="pull-left">0%</div>
+                                <div class="progress-bar" role="progressbar" aria-valuenow="{{recommendation.reason_value}}" aria-valuemin="0" aria-valuemax="100" style="width: {{recommendation.reason_value}}%">
+                                    {{recommendation.reason_value | number: 0}}%
                                 </div>
-                                <div class="pull-right">100%</div>
                            </div>
                        </p>
                         <hr>
@@ -54,8 +56,8 @@
                                     <a ng-click="markAsUseful(false, $index)" class="btn" ng-class="{'btn-selected': isNotUsefulSelected(recommendation.useful)}" ng-model="recommendaiton">
                                         <span class="glyphicon glyphicon-remove" style="color: red;"></span>
                                     </a>
-                                    <a ng-click="saveRecommendation(true, $index)" class="btn btn-success" ng-hide="recommendation.saved">Save</a>
-                                    <a ng-click="saveRecommendation(false, $index)" class="btn btn-danger" ng-hide="!recommendation.saved">Unsave</a>
+                                    <a ng-click="saveRecommendation(true, $index)" class="btn btn-success" ng-show="!recommendation.saved">Save</a>
+                                    <a ng-click="saveRecommendation(false, $index)" class="btn btn-danger" ng-show="recommendation.saved">Unsave</a>
                                 </p>
                             </div>
                             <div class="col-md-5">

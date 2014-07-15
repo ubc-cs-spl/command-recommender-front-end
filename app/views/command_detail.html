@@ -1,0 +1,90 @@
+<div class="navbar navbar-inverse navbar-static-top" role="navigation" ng-controller="NavigationController">
+    <div class="navbar-header">
+        <div class="navbar-brand">Command Recommender</div>
+    </div>
+    <div>
+            <ul class="nav navbar-nav">
+            <li ng-class="{'active': current == 'current'}">
+                <a ng-href="#/recommendations/{{userId}}/current">Current Recommendations</a>
+            </li>
+            <li ng-class="{'active': current == 'saved'}">
+                <a ng-href="#/recommendations/{{userId}}/saved">Saved Recommendations</a>
+            </li>
+            <li ng-class="{'active': current == 'past'}">
+                <a ng-href="#/recommendations/{{userId}}/past">Past Recommendations</a>
+            </li>
+            <li class="active">
+                <a ng-href="#/command_detail/{{userId}}">Help Community</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div ng-controller="CommandDetailController">
+    <div class = "container">
+        <div class="row">
+            <div class="well well-sm col-md-12">
+                <form class="form-inline">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input type="text" name="search" ng-model="searchValue" class="form-control" placeholder="Enter Eclipse Command-Id" style="width: 100%">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="radio-inline">
+                                <input type="radio" ng-model="filter" name="filter" value="all" class="form-control">All
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" ng-model="filter" name="filter" value="no_details" class="form-control">No Details
+                            </label>
+                            <a class="btn btn-success" ng-click="search()" class="form-control">Search</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="alert alert-danger" ng-show="results.length==0 && searched">No Results</div>
+            <table class= "table-striped table-hover table-bordered" ng-hide="results.length==0 || !results">
+                <thead>
+                    <tr>
+                        <td>Command ID</td>
+                        <td>Name</td>
+                        <td>Shortcut</td>
+                        <td>Description</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="result in results | offset: currentPage*itemsPerPage | limitTo: itemsPerPage" ng-click="showCommand(result.id)">
+                        <td style="word-wrap: break-word">
+                            {{result.command_id}}
+                        </td>
+                        <td>
+                            {{result.command_name?result.command_name:"Missing"}}
+                        </td>
+                        <td>
+                            {{result.shortcut?"Complete":"Missing"}}
+                        </td>
+                        <td>
+                            {{result.description?"Complete":"Missing"}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row" ng-show="pageCount() > 1">
+            <div class="col-md-10 col-md-offset-1">
+                <ul class="pagination">
+                    <li ng-class="prevPageDisabled()">
+                        <a  ng-click="prevPage()">Prev</a>
+                    </li>
+                    <li ng-repeat="n in range()" ng-class="{active: n == currentPage}" ng-click="setPage(n)">
+                        <a >{{n+1}}</a>
+                    </li>
+                    <li ng-class="nextPageDisabled()">
+                        <a  ng-click="nextPage()">Next</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+      </div>
+</div>
+

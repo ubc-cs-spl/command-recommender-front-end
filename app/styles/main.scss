@@ -98,3 +98,12 @@ body {
 .btn-selected{
   @include button-variant($btn-default-color, whitesmoke, #dddddd);
 }
+
+
+.edit-link{
+  text-decoration: none;
+}
+
+tbody{
+  width: 100%;
+}

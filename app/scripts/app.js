@@ -5,16 +5,21 @@ angular
     'ngCookies',
     'ngResource',
     'ngSanitize',
-    'ngRoute'
+    'ngRoute',
+    'ui.bootstrap'
   ])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
-      .when('/:userId/:current', {
-        templateUrl: 'views/main.html',
-        controller: 'RecommendationController'
-      })
+        .when('/command_detail/:userId',{
+            templateUrl: 'views/command_detail.html',
+            controller: 'CommandDetailController'
+        })
         .when('/:userId', {
-            redirectTo: '/:userId/current'
+            redirectTo: '/recommendations/:userId/current'
+        })
+        .when('/recommendations/:userId/:current', {
+            templateUrl: 'views/main.html',
+            controller: 'RecommendationController'
         })
       .when('/', {
             templateUrl: 'views/invalid-user.html'
@@ -22,4 +27,10 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-  }]);
+  }])
+    .filter('offset', function() {
+        return function(input, start) {
+            start = parseInt(start, 10);
+            return input.slice(start);
+        };
+    });
