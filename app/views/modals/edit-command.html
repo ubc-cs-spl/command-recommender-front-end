@@ -1,23 +1,26 @@
-<div class="modal-header">
-    Edit Command: {{$parent.commandUnderEdit.command_id}}
+<div class="modal-header" ng-show="currentCommand">
+    <div class="modal-title"><h3>{{currentCommand.command_id}}</h3></div>
 </div>
-<div class="modal-body">
-    <div class="alert alert-success" ng-show="$parent.saved">Saved</div>
-    <div class="alert alert-danger" ng-show="$parent.failed">Failed to Save</div>
+<div class="modal-header alert alert-danger" ng-hide="currentCommand">
+    <div class="modal-title"><h3>No Command Found</h3></div>
+</div>
+<div class="modal-body" ng-show="currentCommand">
+    <div class="alert alert-success" ng-show="saved">Saved</div>
+    <div class="alert alert-danger" ng-show="failedToSave">Failed to Save</div>
     <div class="form-group">
         <label for="command_name">Command Name</label>
-        <input class="form-control" type="text" id="command_name" ng-model="$parent.commandUnderEdit.command_name">
+        <input class="form-control" type="text" id="command_name" ng-model="currentCommand.command_name">
     </div>
     <div class="form-group">
         <label>Shortcut</label>
-        <input class="form-control" type="text" ng-model="commandUnderEdit.shortcut">
+        <input class="form-control" type="text" ng-model="currentCommand.shortcut">
     </div>
     <div class="form-group">
         <label for="command_description">Command Description</label>
-        <textarea class="form-control" id="command_description" ng-model="$parent.commandUnderEdit.description"></textarea>
+        <textarea class="form-control" id="command_description" ng-model="currentCommand.description"></textarea>
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn" data-ng-click="$parent.close()">Close</button>
-    <button type="button" class="btn btn-primary" data-ng-click="$parent.saveCommand()">Save</button>
+    <button type="button" class="btn" data-ng-click="cancel()">Close</button>
+    <button type="button" class="btn btn-primary" data-ng-click="saveCommand()">Save</button>
 </div>

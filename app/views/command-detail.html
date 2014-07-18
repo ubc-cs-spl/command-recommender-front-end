@@ -1,24 +1,3 @@
-<div class="navbar navbar-inverse navbar-static-top" role="navigation" ng-controller="NavigationController">
-    <div class="navbar-header">
-        <div class="navbar-brand">Command Recommender</div>
-    </div>
-    <div>
-            <ul class="nav navbar-nav">
-            <li ng-class="{'active': current == 'current'}">
-                <a ng-href="#/recommendations/{{userId}}/current">Current Recommendations</a>
-            </li>
-            <li ng-class="{'active': current == 'saved'}">
-                <a ng-href="#/recommendations/{{userId}}/saved">Saved Recommendations</a>
-            </li>
-            <li ng-class="{'active': current == 'past'}">
-                <a ng-href="#/recommendations/{{userId}}/past">Past Recommendations</a>
-            </li>
-            <li class="active">
-                <a ng-href="#/command_detail/{{userId}}">Help Community</a>
-            </li>
-        </ul>
-    </div>
-</div>
 <div ng-controller="CommandDetailController">
     <div class = "container">
         <div class="row">
@@ -43,7 +22,7 @@
         </div>
         <div class="row">
             <div class="alert alert-danger" ng-show="results.length==0 && searched">No Results</div>
-            <table class= "table-striped table-hover table-bordered" ng-hide="results.length==0 || !results">
+            <table class= "table table-striped table-hover table-bordered command-table" ng-hide="results.length==0 || !results">
                 <thead>
                     <tr>
                         <td>Command ID</td>
@@ -53,7 +32,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="result in results | offset: currentPage*itemsPerPage | limitTo: itemsPerPage" ng-click="showCommand(result.id)">
+                    <tr ng-repeat="result in results | offset: currentPage*itemsPerPage | limitTo: itemsPerPage" ng-click="showCommand(result.id, $index)">
                         <td style="word-wrap: break-word">
                             {{result.command_id}}
                         </td>
@@ -70,19 +49,9 @@
                 </tbody>
             </table>
         </div>
-        <div class="row" ng-show="pageCount() > 1">
-            <div class="col-md-10 col-md-offset-1">
-                <ul class="pagination">
-                    <li ng-class="prevPageDisabled()">
-                        <a  ng-click="prevPage()">Prev</a>
-                    </li>
-                    <li ng-repeat="n in range()" ng-class="{active: n == currentPage}" ng-click="setPage(n)">
-                        <a >{{n+1}}</a>
-                    </li>
-                    <li ng-class="nextPageDisabled()">
-                        <a  ng-click="nextPage()">Next</a>
-                    </li>
-                </ul>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1" ng-show="results.length > 0">
+                <pagination ng-model="currentPage" total-items="results.length" items-per-page="itemsPerPage" max-size="10"></pagination>
             </div>
         </div>
       </div>

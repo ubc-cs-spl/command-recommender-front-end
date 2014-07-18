@@ -4,7 +4,7 @@ function createControllerAndTestGetData($httpBackend, createController, $rootSco
     $httpBackend.expectGET('/api/get_recommendations/abcde/current');
     var controller = createController();
     $httpBackend.flush();
-    expect($rootScope.recommendations).toEqual(returnedCommand);
+    expect($rootScope.chunkedRecommendations).toEqual(returnedCommand);
 }
 describe('Controller: RecommendationController', function () {
     var $httpBackend, $rootScope, createController;
@@ -56,7 +56,7 @@ describe('Controller: RecommendationController', function () {
       $httpBackend.expectGET('/api/mark_recommendation/53924ce24804dd6a9d000064?useful=false');
       $rootScope.markAsUseful(false, 0);
       $httpBackend.flush();
-      expect($rootScope.recommendations[0].useful).toBe(false);
+      expect($rootScope.chunkedRecommendations[0].useful).toBe(false);
   });
 
   it('isUsefulSelected returns the correct usefulness when passed null, true or false', function(){

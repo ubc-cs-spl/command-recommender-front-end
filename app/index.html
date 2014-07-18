@@ -24,8 +24,29 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <navigation></navigation>
+    <div class="navbar navbar-inverse navbar-static-top" role="navigation" ng-controller="NavigationController">
+        <div class="navbar-header">
+            <div class="navbar-brand">Command Recommender</div>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li ng-class="{'active': current == 'current'}">
+                    <a ng-href="#/recommendations/current/{{userId}}">Top 10 Recommendations</a>
+                </li>
+                <li ng-class="{'active': current == 'saved'}">
+                    <a ng-href="#/recommendations/saved/{{userId}}">Saved Recommendations</a>
+                </li>
+                <li ng-class="{'active': current == 'all'}">
+                    <a ng-href="#/recommendations/all/{{userId}}">All Recommendations</a>
+                </li>
+                <li ng-class="{'active': current == 'command_detail'}">
+                    <a ng-href="#/command_detail/{{userId}}">Help Community</a>
+                </li>
+            </ul>
+        </div>
+    </div>
     <div ng-view=""></div>
+
 
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -58,9 +79,14 @@
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/recommendation.js"></script>
+        <script src="scripts/controllers/current_recommendation.js"></script>
         <script src="scripts/controllers/navigation.js"></script>
         <script src="scripts/controllers/command_detail.js"></script>
+        <script src="scripts/services/recommendation.js"></script>
+        <script src="scripts/services/navigation_service.js"></script>
+        <script src="scripts/controllers/all_recommendations.js"></script>
+        <script src="scripts/services/command_service.js"></script>
+        <script src="scripts/controllers/modal_command_controller.js"></script>
         <!-- endbuild -->
 </body>
 </html>

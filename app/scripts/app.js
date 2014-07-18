@@ -2,27 +2,31 @@
 
 angular
   .module('frontEndApp', [
-    'ngCookies',
-    'ngResource',
-    'ngSanitize',
-    'ngRoute',
-    'ui.bootstrap'
+        'ngCookies',
+        'ngResource',
+        'ngSanitize',
+        'ngRoute',
+        'ui.bootstrap'
   ])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when('/command_detail/:userId',{
-            templateUrl: 'views/command_detail.html',
+            templateUrl: '../views/command-detail.html',
             controller: 'CommandDetailController'
         })
-        .when('/:userId', {
-            redirectTo: '/recommendations/:userId/current'
+        .when('/recommendations/all/:userId',{
+            templateUrl: '../views/all-recommendations.html',
+            controller: 'AllRecommendationsController'
         })
-        .when('/recommendations/:userId/:current', {
-            templateUrl: 'views/main.html',
-            controller: 'RecommendationController'
+        .when('/:userId', {
+            redirectTo: '/recommendations/current/:userId'
+        })
+        .when('/recommendations/:current/:userId', {
+            templateUrl: '../views/current-recommendations.html',
+            controller: 'CurrentRecommendationsController'
         })
       .when('/', {
-            templateUrl: 'views/invalid-user.html'
+            templateUrl: '../views/invalid-route.html'
         })
       .otherwise({
         redirectTo: '/'

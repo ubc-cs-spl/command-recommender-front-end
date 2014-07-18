@@ -1,29 +1,22 @@
-<div class="navbar navbar-inverse navbar-static-top" role="navigation" ng-controller="NavigationController">
-    <div class="navbar-header">
-        <div class="navbar-brand">Command Recommender</div>
+<div class = "container-fluid" ng-controller="CurrentRecommendationsController" ng-show="initialized">
+    <div class="row" ng-show="validUser">
+        <div class="col-md-3 col-md-offset-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label>Select Algorithm To View:</label>
+                            <select ng-model="currentAlgorithmType" ng-options="algorithmType for algorithmType in algorithmTypes">
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <ul class="nav navbar-nav">
-            <li ng-class="{'active': current == 'current'}">
-                <a ng-href="#/recommendations/{{userId}}/current">Current Recommendations</a>
-            </li>
-            <li ng-class="{'active': current == 'saved'}">
-                <a ng-href="#/recommendations/{{userId}}/saved">Saved Recommendations</a>
-            </li>
-            <li ng-class="{'active': current == 'past'}">
-                <a ng-href="#/recommendations/{{userId}}/past">Past Recommendations</a>
-            </li>
-            <li ng-class="{'active': current == 'command_detail'}">
-                <a ng-href="#/command_detail/{{userId}}">Help Community</a>
-            </li>
-        </ul>
-    </div>
-</div>
-
-<div class = "container-fluid" ng-controller="RecommendationController">
-    <div class="row">
+    <div class="row" ng-repeat="recommendations in chunkedRecommendations">
         <div class="col-md-6" ng-repeat="recommendation in recommendations">
-            <div class = "panel panel-default" >
+            <div class = "panel panel-default">
                     <div class="panel-heading">
                         <h2>{{recommendation.command_detail.command_name}}</h2>
                     </div>
@@ -69,12 +62,20 @@
                 </div>
             </div>
         </div>
-    <div class="panel panel-danger" ng-show="recommendations.length == 0">
+    <div class="panel panel-danger" ng-show="recommendations.length == 0 && validUser">
         <div class = "panel-heading">
             <h2>Need Recommendations</h2>
         </div>
         <div class="panel-body">
             You currently do not have any recommendations
+        </div>
+    </div>
+    <div class="panel panel-danger" ng-hide="validUser">
+        <div class = "panel-heading">
+            <h2>Invalid User</h2>
+        </div>
+        <div class="panel-body">
+            The User Id you have used is not valid. Please ensure that the user id you have used is correct
         </div>
     </div>
 </div>

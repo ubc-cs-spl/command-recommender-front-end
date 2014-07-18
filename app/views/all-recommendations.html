@@ -1,0 +1,50 @@
+<div class="container-fluid" ng-controller="AllRecommendationsController">
+    <div ng-show="validUser">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="well well-sm">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label>Algorithm Type</label>
+                        <select ng-model="currentAlgorithmType" ng-options="algorithmType for algorithmType in algorithmTypes">
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <table class="table table-striped table-bordered command-table">
+                <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Shortcut</td>
+                        <td>Description</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="recommendation in recommendations | offset: currentPage*itemsPerPage | limitTo: itemsPerPage" ng-click="showCommand(recommendation.command_detail_id, $index)">
+                        <td>{{recommendation.command_detail.command_name?recommendation.command_detail.command_name:recommendation.command_detail.command_id}}</td>
+                        <td ng-class="{'missing': !recommendation.command_detail.shortcut}">{{recommendation.command_detail.shortcut?recommendation.command_detail.shortcut:"None"}}</td>
+                        <td ng-class="{'missing': !recommendation.command_detail.description}">{{recommendation.command_detail.description?"Present":"Missing"}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1" ng-show="recommendations.length > 0">
+                    <pagination ng-model="currentPage" total-items="results.length" items-per-page="itemsPerPage" max-size="10"></pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="panel panel-danger" ng-hide="validUser">
+        <div class = "panel-heading">
+            <h2>Invalid User</h2>
+        </div>
+        <div class="panel-body">
+            The User Id you have used is not valid. Please ensure that the user id you have used is correct
+        </div>
+    </div>
+</div>
