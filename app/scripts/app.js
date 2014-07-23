@@ -14,6 +14,10 @@ angular
             templateUrl: '../views/command-detail.html',
             controller: 'CommandDetailController'
         })
+        .when('/reports/:userId', {
+            templateUrl: '../views/report.html',
+            controller: 'ReportController'
+        })
         .when('/recommendations/all/:userId',{
             templateUrl: '../views/all-recommendations.html',
             controller: 'AllRecommendationsController'

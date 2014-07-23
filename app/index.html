@@ -42,6 +42,9 @@
                 <li ng-class="{'active': current == 'command_detail'}">
                     <a ng-href="#/command_detail/{{userId}}">Help Community</a>
                 </li>
+                <li ng-class="{'active': current == 'reports'}">
+                    <a ng-href="#/reports/{{userId}}">Usage Report</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -74,6 +77,7 @@
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -87,6 +91,8 @@
         <script src="scripts/controllers/all_recommendations.js"></script>
         <script src="scripts/services/command_service.js"></script>
         <script src="scripts/controllers/modal_command_controller.js"></script>
+        <script src="scripts/services/report_service.js"></script>
+        <script src="scripts/controllers/report_controller.js"></script>
         <!-- endbuild -->
 </body>
 </html>
