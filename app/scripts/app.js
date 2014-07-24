@@ -6,8 +6,9 @@ angular
         'ngResource',
         'ngSanitize',
         'ngRoute',
-        'ui.bootstrap'
-  ])
+        'ui.bootstrap',
+        'angles'
+    ])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when('/command_detail/:userId',{
