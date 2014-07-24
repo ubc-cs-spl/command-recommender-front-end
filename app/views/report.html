@@ -1,0 +1,7 @@
+<div ng-controller="ReportController">
+    {{reports[0]}}
+    <div ng-repeat="command_stat in reports[0].command_stats">
+        {{command_stat.command_id}}
+        {{command_stat.user_id}}
+    </div>
+</div>
