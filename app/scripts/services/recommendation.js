@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('frontEndApp')
-  .service('RecommendationService', ['$http', function($http) {
+    .service('RecommendationService', ['$http', function($http) {
         this.getRecommendations = function(userId, recommendationType, algorithmType){
             var promise = $http.get('/api/get_recommendations/' + userId + '/' + recommendationType,
                 {
@@ -35,13 +35,12 @@ angular.module('frontEndApp')
         };
 
         this.isValidUser = function(userId){
-            var promise = $http.get('/api/users/is_valid/' + userId)
+            return $http.get('/api/users/is_valid/' + userId)
                 .then(function(response){
                     return response.data.valid;
                 }, function(){
                     return false;
                 });
-            return promise;
         };
 
         this.getAlgorithmTypes = function(userId){
@@ -52,4 +51,4 @@ angular.module('frontEndApp')
                     return [];
                 })
         }
-  }]);
+    }]);
