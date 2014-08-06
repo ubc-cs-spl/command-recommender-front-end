@@ -50,16 +50,14 @@ angular.module('frontEndApp')
             $scope.getRecommendations();
         });
 
-        $scope.markAsUseful = function(useful, index){
-            var recommendation = $scope.chunkedRecommendations[index];
+        $scope.markAsUseful = function(useful, recommendation){
             RecommendationService.markAsUseful(useful, recommendation).then();
         };
 
-        $scope.saveRecommendation = function(saved, index){
-            var recommendation = $scope.chunkedRecommendations[index];
+        $scope.saveRecommendation = function(saved, recommendation, parentIndex, index){
             RecommendationService.saveRecommendation(saved, recommendation).then(function(success){
                 if(saved && success){
-                    $scope.chunkedRecommendations.splice(index, 1);
+                    $scope.chunkedRecommendations[parentIndex].splice(index, 1);
                 }
             });
         };
