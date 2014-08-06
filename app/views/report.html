@@ -1,3 +1,26 @@
 <div ng-controller="ReportController">
-    <canvas piechart options="options" data="commandStatChartData" width="500" height="300"></canvas>
+    <div>
+        <h1>Command Usage Wheel</h1>
+        <canvas donutchart data="commandStatChartData" width="400" height="400"></canvas>
+        <!--TODO hotkey visualization with stacked bar chart-->
+        <h1>Command Usage Bar Chart</h1>
+        <canvas barchart data="barchartData" width="800" height="500"></canvas>
+        <!--<h1>Hotkey Usage Radar Chart</h1>
+        <canvas radarchart data="radarchartData" width="400" height="400"></canvas>-->
+    </div>
+    <div class="list-group">
+            <li class="list-group-item active">Newly Learned Commands</li>
+            <li class="list-group-item" ng-repeat="command in newlyLearnedCommands"
+                title={{command.command_detail.shortcut}}>
+                {{command.command_detail.command_name}}
+            </li>
+    </div>
+    <div class="list-group">
+        <li class="list-group-item active">Recommended Commands</li>
+        <li class="list-group-item" ng-repeat="command in recommendations"
+            title={{command.command_detail.description}}>
+            {{command.command_detail.command_name +
+            (command.command_detail.shortcut? " ("+command.command_detail.shortcut+")" : "")}}
+        </li>
+    </div>
 </div>
