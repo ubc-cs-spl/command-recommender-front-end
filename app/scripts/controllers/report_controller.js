@@ -7,6 +7,9 @@ angular.module('frontEndApp')
             //TODO: refactor
             NavigationService.updateNavigation($routeParams.userId, 'report');
 
+            $scope.validUser = {};
+            $scope.initialized = false;
+            $scope.isStatsAvailable = false;
             $scope.reports = [];
             $scope.newlyLearnedCommands = [];
             $scope.commandStatChartData = [];
@@ -59,6 +62,14 @@ angular.module('frontEndApp')
                 ]
             };
 
+            //TODO refactor this logic as it's repeated a lot in the code base
+            $scope.isValidUser = function(){
+                RecommendationService.isValidUser($routeParams.userId).then(function(valid){
+                    $scope.validUser = valid;
+                });
+            };
+            $scope.isValidUser();
+
             $scope.getReports = function(){
                 ReportService.getReports($routeParams.userId).then(function(data){
                     if (data != null) {
@@ -68,8 +79,8 @@ angular.module('frontEndApp')
                         $scope.processCmdStats($scope.reports[0].command_stats,
                             $scope.reports[0].total_invocation);
                         $scope.newlyLearnedCommands = $scope.reports[0].newly_learned_commands;
-                        //$scope.processNewlyLearnedCmds($scope.reports[0].newly_learned_commands);
                     }
+                    $scope.initialized = true;
                 });
             };
 
@@ -79,7 +90,9 @@ angular.module('frontEndApp')
 
             $scope.processCmdStats = function(commandStats, totalCount){
                 var hue = 0;
-
+                if (commandStats.length > 0) {
+                    $scope.isStatsAvailable = true;
+                }
                 for(var i=0; i<commandStats.length; i++){
                     var name;
                     var shortcut;
@@ -126,7 +139,7 @@ angular.module('frontEndApp')
                 segmentStrokeWidth : 0,
 
                 //Number - The percentage of the chart that we cut out of the middle
-                percentageInnerCutout : 99, // This is 0 for Pie charts
+                percentageInnerCutout : 50, // This is 0 for Pie charts
 
                 //Number - Amount of animation steps
                 animationSteps : 100,

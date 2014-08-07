@@ -1,26 +1,52 @@
-<div ng-controller="ReportController">
-    <div>
-        <h1>Command Usage Wheel</h1>
-        <canvas donutchart data="commandStatChartData" width="400" height="400"></canvas>
-        <!--TODO hotkey visualization with stacked bar chart-->
-        <h1>Command Usage Bar Chart</h1>
-        <canvas barchart data="barchartData" width="800" height="500"></canvas>
-        <!--<h1>Hotkey Usage Radar Chart</h1>
-        <canvas radarchart data="radarchartData" width="400" height="400"></canvas>-->
+<div ng-controller="ReportController" class="container-fluid">
+    <div class="panel panel-danger" ng-hide="validUser">
+        <div class = "panel-heading">
+            <h2>Invalid User</h2>
+        </div>
+        <div class="panel-body">
+            The User Id you have used is not valid. Please ensure that the user id you have used is correct
+        </div>
     </div>
-    <div class="list-group">
-            <li class="list-group-item active">Newly Learned Commands</li>
-            <li class="list-group-item" ng-repeat="command in newlyLearnedCommands"
-                title={{command.command_detail.shortcut}}>
-                {{command.command_detail.command_name}}
-            </li>
-    </div>
-    <div class="list-group">
-        <li class="list-group-item active">Recommended Commands</li>
-        <li class="list-group-item" ng-repeat="command in recommendations"
-            title={{command.command_detail.description}}>
-            {{command.command_detail.command_name +
-            (command.command_detail.shortcut? " ("+command.command_detail.shortcut+")" : "")}}
-        </li>
+    <div ng-show="validUser">
+        <div class="alert alert-info" role="alert" ng-hide="initialized">
+            <p>Your usage report will be retrieved shortly.</p>
+        </div>
+        <div ng-show="initialized">
+            <div class="alert alert-warning" role="alert" ng-hide="isStatsAvailable">
+                <p>No usage data for this period is available.</p>
+            </div>
+            <div ng-if="isStatsAvailable">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <h2>Command Usage Wheel</h2>
+                        <canvas donutchart data="commandStatChartData" options="options"></canvas>
+                    </div>
+                    <div class="col-sm-5">
+                        <!--TODO hotkey visualization with stacked bar chart-->
+                        <h2>Command Usage Bar Chart</h2>
+                        <canvas barchart data="barchartData" responsive="chk" width="800" height="500"></canvas>
+                        <!--<h1>Hotkey Usage Radar Chart</h1>
+                        <canvas radarchart data="radarchartData" width="400" height="400"></canvas>-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="list-group" ng-show="newlyLearnedCommands">
+                        <li class="list-group-item active">Newly Learned Commands</li>
+                        <li class="list-group-item" ng-repeat="command in newlyLearnedCommands"
+                            title={{command.command_detail.shortcut}}>
+                            {{command.command_detail.command_name}}
+                        </li>
+                    </div>
+                    <div class="list-group" ng-show="recommendations">
+                        <li class="list-group-item active">Recommended Commands</li>
+                        <li class="list-group-item" ng-repeat="command in recommendations"
+                            title={{command.command_detail.description}}>
+                            {{command.command_detail.command_name +
+                            (command.command_detail.shortcut? " ("+command.command_detail.shortcut+")" : "")}}
+                        </li>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

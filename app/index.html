@@ -26,9 +26,15 @@
     <!-- Add your site or application content here -->
     <div class="navbar navbar-inverse navbar-static-top" role="navigation" ng-controller="NavigationController">
         <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse-nav-options">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
             <div class="navbar-brand">Command Recommender</div>
         </div>
-        <div>
+        <div class="collapse navbar-collapse" id="collapse-nav-options">
             <ul class="nav navbar-nav">
                 <li ng-class="{'active': current == 'current'}">
                     <a ng-href="#/recommendations/current/{{userId}}">Top 10 Recommendations</a>
