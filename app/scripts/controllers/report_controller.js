@@ -8,13 +8,11 @@ angular.module('frontEndApp')
             NavigationService.updateNavigation($routeParams.userId, 'report');
 
             $scope.validUser = {};
-            $scope.initialized = false;
-            $scope.isStatsAvailable = false;
-            $scope.reports = [];
-            $scope.newlyLearnedCommands = [];
-            $scope.commandStatChartData = [];
-            $scope.colors = [];
-            $scope.recommendations = [];
+            $scope.period = 7;
+
+            $scope.options = {
+                responsive : true
+            };
             $scope.barchartData = {
                 labels : [],
                 datasets : [
@@ -36,31 +34,20 @@ angular.module('frontEndApp')
                     }
                 ]
             };
-            $scope.radarchartData = {
-                labels: [],
-                datasets: [
-                    {
-                        label: "My First dataset",
-                        fillColor: "rgba(220,220,220,0.2)",
-                        strokeColor: "rgba(220,220,220,1)",
-                        pointColor: "rgba(220,220,220,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: []
-                    },
-                    {
-                        label: "My Second dataset",
-                        fillColor: "rgba(151,187,205,0.2)",
-                        strokeColor: "rgba(151,187,205,1)",
-                        pointColor: "rgba(151,187,205,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(151,187,205,1)",
-                        data: []
-                    }
-                ]
-            };
+
+            var init = function() {
+                $scope.initialized = false;
+                $scope.isStatsAvailable = false;
+                $scope.reports = [];
+                $scope.newlyLearnedCommands = [];
+                $scope.commandStatChartData = [];
+                $scope.colors = [];
+                $scope.recommendations = [];
+                $scope.report = [];
+                $scope.barchartData.labels =[];
+                $scope.barchartData.datasets[0].data = [];
+                $scope.barchartData.datasets[1].data = [];
+            }
 
             //TODO refactor this logic as it's repeated a lot in the code base
             $scope.isValidUser = function(){
@@ -70,89 +57,47 @@ angular.module('frontEndApp')
             };
             $scope.isValidUser();
 
-            $scope.getReports = function(){
-                ReportService.getReports($routeParams.userId).then(function(data){
-                    if (data != null) {
-                        $scope.reports = data;
+            $scope.getReport = function() {
+                init();
+                ReportService.getReport($routeParams.userId, $scope.period).then(function(data) {
+                    var stats = data.stats;
+                    if (stats.length > 0) {
+                        $scope.isStatsAvailable = true;
                     }
-                    if ($scope.reports.length > 0) {
-                        $scope.processCmdStats($scope.reports[0].command_stats,
-                            $scope.reports[0].total_invocation);
-                        $scope.newlyLearnedCommands = $scope.reports[0].newly_learned_commands;
+                    var totalCount = data.total_invocation;
+                    var hue = 0;
+                    for(var i=0; i<stats.length; i += 1){
+                        var cmd = stats[i];
+                        var name = cmd.name || 'Missing';
+                        var shortcut = cmd.shortcut;
+                        var useCount = cmd.use_count;
+                        var hotkeyCount = cmd.hotkey_count;
+                        if (cmd.new) {
+                            $scope.newlyLearnedCommands.push({
+                                name: name,
+                                shortcut: shortcut
+                            })
+                        }
+                        $scope.commandStatChartData.push({
+                            value: useCount,
+                            color: $scope.getHslColor(hue, 90, 57),
+                            highlight: $scope.getHslColor(hue, 100, 50),
+                            label: name
+                        });
+                        hue += 360 / totalCount * useCount;
+                        if (hotkeyCount < useCount) {
+                            $scope.barchartData.labels.push(name + (shortcut ? " (" + shortcut + ")" : ""));
+                            $scope.barchartData.datasets[0].data.push(useCount);
+                            $scope.barchartData.datasets[1].data.push(hotkeyCount);
+                        }
                     }
                     $scope.initialized = true;
-                });
+                })
             };
+            $scope.getReport();
 
             $scope.getHslColor = function(h, s, l){
                 return "hsl(" + h + "," + s + "%," + l + "%)";
-            };
-
-            $scope.processCmdStats = function(commandStats, totalCount){
-                var hue = 0;
-                if (commandStats.length > 0) {
-                    $scope.isStatsAvailable = true;
-                }
-                for(var i=0; i<commandStats.length; i++){
-                    var name;
-                    var shortcut;
-                    var useCount = commandStats[i].use_count;
-                    var hotkeyCount = commandStats[i].hotkey_count;
-                    var commandDetail = commandStats[i].command_detail;
-                    if (i != 0)
-                        hue += 360/totalCount*useCount;
-                    if(angular.isUndefined(commandDetail)){
-                        name = "Missing";
-                        shortcut = "";
-                    }else{
-                        name = commandDetail.command_name;
-                        shortcut = angular.isUndefined(commandDetail.shortcut) ? "" : " (" + commandDetail.shortcut + ")";
-                    }
-
-                    $scope.barchartData.labels.push(name + shortcut);
-                    $scope.barchartData.datasets[0].data.push(useCount);
-                    $scope.barchartData.datasets[1].data.push(hotkeyCount);
-                    if (hotkeyCount < useCount) {
-                        $scope.radarchartData.labels.push(name + shortcut);
-                        $scope.radarchartData.datasets[0].data.push(useCount);
-                        $scope.radarchartData.datasets[1].data.push(hotkeyCount);
-                    }
-                    $scope.commandStatChartData.push({
-                        value: useCount,
-                        color: $scope.getHslColor(hue, 90, 57),
-                        highlight: $scope.getHslColor(hue, 100, 50),
-                        label: name
-                    });
-                }
-            };
-
-            $scope.options = {
-
-                responsive : true,
-                //Boolean - Whether we should show a stroke on each segment
-                segmentShowStroke : true,
-
-                //String - The colour of each segment stroke
-                segmentStrokeColor : "#fff",
-
-                //Number - The width of each segment stroke
-                segmentStrokeWidth : 0,
-
-                //Number - The percentage of the chart that we cut out of the middle
-                percentageInnerCutout : 50, // This is 0 for Pie charts
-
-                //Number - Amount of animation steps
-                animationSteps : 100,
-
-                //String - Animation easing effect
-                animationEasing : "easeOutBounce",
-
-                //Boolean - Whether we animate the rotation of the Doughnut
-                animateRotate : true,
-
-                //Boolean - Whether we animate scaling the Doughnut from the centre
-                animateScale : false
-
             };
 
             $scope.getRecommendations = function() {
@@ -164,8 +109,6 @@ angular.module('frontEndApp')
                         }
                     });
             };
-
-            $scope.getReports();
             $scope.getRecommendations();
 
         }]);

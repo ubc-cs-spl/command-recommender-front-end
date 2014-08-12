@@ -29,12 +29,14 @@ angular.module('frontEndApp')
 
         var modalInstance;
 
+        //TODO: might want to move this to a service?
         $scope.search = function() {
-            $http.get('api/command_details/filter/command_id',
+            $http.get('api/command_details/filter',
                 {
-                    'params': {
-                        'filter_value': $scope.searchValue,
-                        'filter': $scope.filter
+                    params: {
+                        filter_type: 'command_id',
+                        filter_value: $scope.searchValue,
+                        filter: $scope.filter
                     }
                 })
                 .success(function (data) {
