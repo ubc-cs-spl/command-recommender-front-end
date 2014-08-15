@@ -6,7 +6,9 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <label>Algorithm Type</label>
-                        <select ng-model="currentAlgorithmType" ng-options="algorithmType for algorithmType in algorithmTypes">
+                        <select ng-model="currentAlgorithmType"
+                                ng-options="algorithmType for algorithmType in algorithmTypes"
+                                ng-change="getRecommendations()">
                         </select>
                     </div>
                 </form>
@@ -20,6 +22,7 @@
                     <tr>
                         <td>Name</td>
                         <td>Shortcut</td>
+                        <td>Rank</td>
                         <td>Description</td>
                     </tr>
                 </thead>
@@ -27,13 +30,14 @@
                     <tr ng-repeat="recommendation in recommendations | offset: currentPage*itemsPerPage | limitTo: itemsPerPage" ng-click="showCommand(recommendation.command_detail_id, $index)">
                         <td>{{recommendation.command_detail.command_name?recommendation.command_detail.command_name:recommendation.command_detail.command_id}}</td>
                         <td ng-class="{'missing': !recommendation.command_detail.shortcut}">{{recommendation.command_detail.shortcut?recommendation.command_detail.shortcut:"None"}}</td>
+                        <td>{{recommendation.rank}}</td>
                         <td ng-class="{'missing': !recommendation.command_detail.description}">{{recommendation.command_detail.description?"Present":"Missing"}}</td>
                     </tr>
                 </tbody>
             </table>
             <div class="row">
                 <div class="col-md-10 col-md-offset-1" ng-show="recommendations.length > 0">
-                    <pagination ng-model="currentPage" total-items="results.length" items-per-page="itemsPerPage" max-size="10"></pagination>
+                    <pagination ng-model="currentPage" total-items="recommendations.length" items-per-page="itemsPerPage" max-size="10"></pagination>
                 </div>
             </div>
         </div>

@@ -7,6 +7,7 @@ angular.module('frontEndApp')
         $scope.initialized = false;
         $scope.algorithmTypes = {};
         $scope.chunkedRecommendations = [];
+        $scope.viewingCurrent = $routeParams.current == 'current';
 
         NavigationService.updateNavigation($routeParams.userId, $routeParams.current);
 

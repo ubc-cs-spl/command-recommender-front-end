@@ -1,12 +1,14 @@
 <div class = "container-fluid" ng-controller="CurrentRecommendationsController" ng-show="initialized">
-    <div class="row" ng-show="validUser">
+    <div class="row" ng-show="validUser && viewingCurrent">
         <div class="col-md-3 col-md-offset-3">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form class="form-inline">
                         <div class="form-group">
                             <label>Select Algorithm To View:</label>
-                            <select ng-model="currentAlgorithmType" ng-options="algorithmType for algorithmType in algorithmTypes">
+                            <select ng-model="currentAlgorithmType"
+                                    ng-options="algorithmType for algorithmType in algorithmTypes"
+                                    ng-change="getRecommendations()">
                             </select>
                         </div>
                     </form>
@@ -43,10 +45,10 @@
                             <div class="col-md-5">
                                 <p class="text-muted">I Found this Useful:</p>
                                 <p>
-                                    <a ng-click="markAsUseful(true, recommendation)" class = "btn" ng-class="{'btn-selected': isUsefulSelected(recommendation.useful)}" ng-model="recommendaiton">
+                                    <a ng-click="markAsUseful(true, recommendation)" class = "btn" ng-class="{'btn-selected': isUsefulSelected(recommendation.useful)}">
                                         <span class="glyphicon glyphicon-ok" style="color: darkgreen;"></span>
                                     </a>
-                                    <a ng-click="markAsUseful(false, recommendation)" class="btn" ng-class="{'btn-selected': isNotUsefulSelected(recommendation.useful)}" ng-model="recommendaiton">
+                                    <a ng-click="markAsUseful(false, recommendation)" class="btn" ng-class="{'btn-selected': isNotUsefulSelected(recommendation.useful)}">
                                         <span class="glyphicon glyphicon-remove" style="color: red;"></span>
                                     </a>
                                     <a ng-click="saveRecommendation(true, recommendation, $parent.$index, $index)" class="btn btn-success" ng-show="!recommendation.saved">Save</a>
