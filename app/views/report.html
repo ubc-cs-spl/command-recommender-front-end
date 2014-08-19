@@ -29,16 +29,22 @@
             </div>
             <div ng-if="isStatsAvailable">
                 <div class="row">
-                    <div class="col-sm-5">
+                    <div class="col-sm-6">
                         <h2>Command Usage Wheel</h2>
-                        <canvas donutchart data="commandStatChartData" options="options"></canvas>
+                        <div class="chart-container">
+                            <div class="canvas-holder">
+                                <canvas chart="Doughnut" data="commandStatChartData" options="options"></canvas>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-5">
+                    <div class="col-sm-6">
                         <!--TODO hotkey visualization with stacked bar chart-->
                         <h2>Hotkey Usage Bar Chart</h2>
-                        <canvas barchart data="barchartData" responsive="chk" width="800" height="500"></canvas>
-                        <!--<h1>Hotkey Usage Radar Chart</h1>
-                        <canvas radarchart data="radarchartData" width="400" height="400"></canvas>-->
+                        <div class="chart-container">
+                            <div class="canvas-holder">
+                                <canvas chart="StackedBar" legend=true data="barchartData" height="500" width="800"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">

@@ -17,7 +17,7 @@ angular.module('frontEndApp')
                 labels : [],
                 datasets : [
                     {
-                        label: "Total Command Invocations",
+                        label: "Command invocation not using shortcuts",
                         fillColor: "rgba(220,220,220,0.5)",
                         strokeColor: "rgba(220,220,220,0.8)",
                         highlightFill: "rgba(220,220,220,0.75)",
@@ -25,7 +25,7 @@ angular.module('frontEndApp')
                         data: []
                     },
                     {
-                        label: "Command Invocations through Shortcuts",
+                        label: "Command invocations using shortcuts",
                         fillColor: "rgba(151,187,205,0.5)",
                         strokeColor: "rgba(151,187,205,0.8)",
                         highlightFill: "rgba(151,187,205,0.75)",
@@ -42,7 +42,6 @@ angular.module('frontEndApp')
                 $scope.newlyLearnedCommands = [];
                 $scope.commandStatChartData = [];
                 $scope.colors = [];
-                $scope.recommendations = [];
                 $scope.report = [];
                 $scope.barchartData.labels =[];
                 $scope.barchartData.datasets[0].data = [];
@@ -85,11 +84,9 @@ angular.module('frontEndApp')
                             label: name
                         });
                         hue += 360 / totalCount * useCount;
-                        if (hotkeyCount < useCount) {
-                            $scope.barchartData.labels.push(name + (shortcut ? " (" + shortcut + ")" : ""));
-                            $scope.barchartData.datasets[0].data.push(useCount);
-                            $scope.barchartData.datasets[1].data.push(hotkeyCount);
-                        }
+                        $scope.barchartData.labels.push(name + (shortcut ? " (" + shortcut + ")" : ""));
+                        $scope.barchartData.datasets[0].data.push(useCount - hotkeyCount);
+                        $scope.barchartData.datasets[1].data.push(hotkeyCount);
                     }
                     $scope.initialized = true;
                 })

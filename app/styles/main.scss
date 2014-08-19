@@ -124,3 +124,51 @@ table.table-striped tbody tr td.missing{
   float: top;
   padding: 15px;
 }
+
+.features article {
+   width: 33.33%;
+   padding: 40px;
+   float: left;
+ }
+
+.chart-container {
+  min-height: 180px;
+  position: relative;
+}
+
+.canvas-holder {
+   padding: 4px 0;
+   position: relative;
+ }
+
+.stackedbar-legend {
+   list-style: none;
+   position: absolute;
+   right: 0px;
+   top: 0;
+ }
+
+.stackedbar-legend li {
+  display: block;
+  padding-left: 30px;
+  position: relative;
+  margin-bottom: 4px;
+  border-radius: 5px;
+  padding: 2px 8px 2px 28px;
+  font-size: 14px;
+  cursor: default;
+  -webkit-transition: background-color 200ms ease-in-out;
+  -moz-transition: background-color 200ms ease-in-out;
+  -o-transition: background-color 200ms ease-in-out;
+  transition: background-color 200ms ease-in-out;
+}
+
+.stackedbar-legend li span {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 100%;
+  border-radius: 5px;
+}
