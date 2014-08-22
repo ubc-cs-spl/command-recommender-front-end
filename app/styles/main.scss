@@ -1,5 +1,6 @@
-$icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
-//$icon-font-path: "bootstrap/";
+//swap these two lines during build
+$icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/"; //for dev
+//$icon-font-path: "bootstrap/"; //for build
 
 // bower:scss
 @import "../bower_components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.scss";
@@ -133,6 +134,7 @@ table.table-striped tbody tr td.missing{
 
 .chart-container {
   min-height: 180px;
+  min-width: 180px;
   position: relative;
 }
 

@@ -27,18 +27,19 @@
             <div class="alert alert-warning" role="alert" ng-hide="isStatsAvailable">
                 <p>No usage data for this period is available.</p>
             </div>
-            <div ng-if="isStatsAvailable">
+            <div ng-show="isStatsAvailable">
                 <div class="row">
                     <div class="col-sm-6">
                         <h2>Command Usage Wheel</h2>
                         <div class="chart-container">
                             <div class="canvas-holder">
-                                <canvas chart="Doughnut" data="commandStatChartData" options="options"></canvas>
+                                <canvas chart="StackedDoughnut" data="commandStatChartData" options="options" responsive="true" width="2" height="1"></canvas>
                             </div>
                         </div>
                     </div>
+                    <!-- this is a hotkey usage chart, we could allow user to select this if they dont like the wheel
+                    <!-->
                     <div class="col-sm-6">
-                        <!--TODO hotkey visualization with stacked bar chart-->
                         <h2>Hotkey Usage Bar Chart</h2>
                         <div class="chart-container">
                             <div class="canvas-holder">
@@ -46,6 +47,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-->
                 </div>
                 <div class="row">
                     <div class="list-group" ng-show="newlyLearnedCommands">

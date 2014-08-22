@@ -2,8 +2,27 @@
 
 angular.module('frontEndApp')
     .controller('ReportController',
-    ['$scope', '$routeParams', 'NavigationService', 'ReportService', 'RecommendationService',
-        function ($scope, $routeParams, NavigationService, ReportService, RecommendationService) {
+    ['$scope',
+        '$routeParams',
+        '$modal',
+        'CommandService',
+        'NavigationService',
+        'ReportService',
+        'RecommendationService',
+        function ($scope,
+                  $routeParams,
+                  $modal,
+                  CommandService,
+                  NavigationService,
+                  ReportService,
+                  RecommendationService) {
+
+            var modalOptions = {
+                templateUrl: 'views/modals/edit-command.html',
+                controller: 'ModalCommandController'
+            };
+
+            var modalInstance;
             //TODO: refactor
             NavigationService.updateNavigation($routeParams.userId, 'report');
 
@@ -11,8 +30,17 @@ angular.module('frontEndApp')
             $scope.period = 7;
 
             $scope.options = {
-                responsive : true
+                responsive : true,
+                dblclickAction : function(segment) {
+                    CommandService.retrieveCommand(segment.id).then(function() {
+                        modalInstance = $modal.open(modalOptions);
+                        modalInstance.result.then(function(commandUnderEdit){
+
+                        })
+                    });
+                }
             };
+
             $scope.barchartData = {
                 labels : [],
                 datasets : [
@@ -37,7 +65,6 @@ angular.module('frontEndApp')
 
             var init = function() {
                 $scope.initialized = false;
-                $scope.isStatsAvailable = false;
                 $scope.reports = [];
                 $scope.newlyLearnedCommands = [];
                 $scope.commandStatChartData = [];
@@ -62,6 +89,8 @@ angular.module('frontEndApp')
                     var stats = data.stats;
                     if (stats.length > 0) {
                         $scope.isStatsAvailable = true;
+                    } else {
+                        $scope.isStatsAvailable = false;
                     }
                     var totalCount = data.total_invocation;
                     var hue = 0;
@@ -79,9 +108,11 @@ angular.module('frontEndApp')
                         }
                         $scope.commandStatChartData.push({
                             value: useCount,
+                            critical: hotkeyCount,
                             color: $scope.getHslColor(hue, 90, 57),
                             highlight: $scope.getHslColor(hue, 100, 50),
-                            label: name
+                            label: name,
+                            id : cmd._id
                         });
                         hue += 360 / totalCount * useCount;
                         $scope.barchartData.labels.push(name + (shortcut ? " (" + shortcut + ")" : ""));
