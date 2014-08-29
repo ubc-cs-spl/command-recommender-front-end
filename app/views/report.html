@@ -27,43 +27,78 @@
             <div class="alert alert-warning" role="alert" ng-hide="isStatsAvailable">
                 <p>No usage data for this period is available.</p>
             </div>
-            <div ng-show="isStatsAvailable">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h2>Command Usage Wheel</h2>
-                        <div class="chart-container">
-                            <div class="canvas-holder">
-                                <canvas chart="StackedDoughnut" data="commandStatChartData" options="options" responsive="true" width="2" height="1"></canvas>
+            <div class="row">
+                <div class="col-sm-6" ng-show="isStatsAvailable">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Command Usage Wheel</div>
+                        <div class="panel-body light-blue">
+                            <div class="row" style="text-align: right">
+                                <button type="submit" class="btn btn-info" ng-click="showOther = !showOther">
+                                    {{showOther ? "View all command usage" : "Expand grey region"}}
+                                </button>
+                                <div class="canvas-holder center-block">
+                                    <canvas ng-hide="showOther" chart="StackedDoughnut" data="commandStatChartData" options="options" responsive="true" width="1" height="1"></canvas>
+                                    <canvas ng-show="showOther" chart="StackedDoughnut" data="otherCommandStatChartData" options="options" responsive="true" width="1" height="1"></canvas>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                * Double click on a session to help the community with the command <br>
+                                * Black-ed out portions represent invocations not triggered by shortcuts
                             </div>
                         </div>
                     </div>
-                    <!-- this is a hotkey usage chart, we could allow user to select this if they dont like the wheel
-                    <!-->
-                    <div class="col-sm-6">
-                        <h2>Hotkey Usage Bar Chart</h2>
-                        <div class="chart-container">
-                            <div class="canvas-holder">
-                                <canvas chart="StackedBar" legend=true data="barchartData" height="500" width="800"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <!-->
                 </div>
-                <div class="row">
-                    <div class="list-group" ng-show="newlyLearnedCommands.length">
-                        <li class="list-group-item active">Newly Learned Commands</li>
-                        <li class="list-group-item" ng-repeat="command in newlyLearnedCommands"
-                            title={{command.shortcut}}>
-                            {{command.name}}
-                        </li>
+                <div class="col-sm-6">
+                    <div class="panel panel-primary" ng-if="recommendations.length">
+                        <div class = "panel-heading">Recommended Commands</div>
+                        <div class="panel-body light-blue">
+                            <div class="col-xs-5" style="padding: 0;">
+                                <div class="rec-selector" ng-class="{selected:rec===command}" ng-repeat="command in recommendations" ng-mouseover="setRec(command)">
+                                    <i class="fa fa-users fa-fw"></i>
+                                    &nbsp;{{command.command_detail.command_name +
+                                    (command.command_detail.shortcut? " ("+command.command_detail.shortcut+")" : "")}}
+                                </div>
+                            </div>
+                            <div class="col-xs-7 recommendation-info" style="padding: 10px;">
+                                <h4>Name:</h4>
+                                <div>{{rec.command_detail.command_name}}</div>
+                                <h4>Description:</h4>
+                                <div>{{rec.command_detail.description}}</div>
+                                <h4>Shortcut:</h4>
+                                <div>{{rec.command_detail.shortcut || "none"}}</div>
+                                <h4>Fun facts:</h4>
+                                <div>This command has been invoked {{rec.command_detail.use_count}} times in total and
+                                    has been used by {{rec.command_detail.user_count}} user(s)</div>
+                                <h4>Recommended by:</h4>
+                                <div>{{rec.algorithm_type}}</div>
+                                <h4>Rank:</h4>
+                                <div>{{rec.rank}}</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="list-group" ng-show="recommendations">
-                        <li class="list-group-item active">Recommended Commands</li>
-                        <li class="list-group-item" ng-repeat="command in recommendations"
-                            title={{command.command_detail.description}}>
-                            {{command.command_detail.command_name +
-                            (command.command_detail.shortcut? " ("+command.command_detail.shortcut+")" : "")}}
-                        </li>
+                </div>
+                <!-- this is a hotkey usage chart, we could allow user to select this if they dont like the wheel
+                <!--
+                <div class="col-sm-6" ng-show="isStatsAvailable">
+                    <h2>Hotkey Usage Bar Chart</h2>
+                    <div class="chart-container">
+                        <div class="canvas-holder">
+                            <canvas chart="StackedBar" legend=true data="barchartData" height="500" width="800"></canvas>
+                        </div>
+                    </div>
+                </div>
+                -->
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-primary" ng-show="newlyLearnedCommands.length">
+                        <div class="panel-heading">Newly Learned Commands</div>
+                        <div class="panel-body light-blue">
+                            <div class="btn disabled" ng-repeat="command in newlyLearnedCommands"
+                                 title={{command.shortcut}}>
+                                {{command.name}}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

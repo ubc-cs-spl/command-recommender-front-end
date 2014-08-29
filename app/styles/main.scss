@@ -17,6 +17,7 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/
 body {
     padding-top: 0px;
     padding-bottom: 0px;
+    background-color: #E0FFFF;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -98,6 +99,9 @@ body {
   @include button-variant($btn-default-color, whitesmoke, #dddddd);
 }
 
+.light-blue {
+  background-color: #E0FFFF;
+}
 
 .edit-link{
   text-decoration: none;
@@ -121,9 +125,26 @@ table.table-striped tbody tr td.missing{
 
 .list-group{
   display: inline-block;
-  float: left;
-  float: top;
-  padding: 15px;
+  border: 0px;
+}
+
+.list-group-item{
+  background-color: #E0FFFF;
+  border-width: 0;
+}
+
+.recommendation-info {
+  display: table-cell;
+}
+
+.list-group-item:first-child {
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+}
+
+.list-group-item:last-child {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
 }
 
 .features article {
@@ -139,8 +160,7 @@ table.table-striped tbody tr td.missing{
 }
 
 .canvas-holder {
-   padding: 4px 0;
-   position: relative;
+   max-width: 500px;
  }
 
 .stackedbar-legend {
@@ -165,6 +185,26 @@ table.table-striped tbody tr td.missing{
   transition: background-color 200ms ease-in-out;
 }
 
+.rec-selector.selected {
+  border-right-style: none;
+  border-left-style: solid;
+  border-top-style: solid;
+  border-bottom-style: solid;
+}
+
+.rec-selector {
+  border-bottom-left-radius: 7px;
+  border-top-left-radius: 7px;
+  border-color: #428bca;
+  border-width: 2px;
+  border-style: none;
+  border-right-style: solid;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+ }
+
 .stackedbar-legend li span {
   display: block;
   position: absolute;
@@ -174,3 +214,4 @@ table.table-striped tbody tr td.missing{
   height: 100%;
   border-radius: 5px;
 }
+
